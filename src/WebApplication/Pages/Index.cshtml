@@ -1,0 +1,107 @@
+﻿@page
+@using WebApp.Pages
+@model WebApp.Pages.IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="container mt-4">
+<!-- Introduction -->
+<div class="mb-2">
+    <h2 class="fw-bold">Intelligent Logging Demo</h2>
+    <p class="text-muted mb-1">
+        This web page is a reference application demonstrating the <a href="https://github.com/DwaineDGIlmer/AiEventing" target="_blank">AiEventing</a> library.
+    </p>
+    <p>
+        <strong>About AiEventing:</strong><br>
+        AiEventing is a .NET solution for advanced, AI-assisted event logging and fault analysis. It provides structured logging, resilient HTTP clients, and integration with AI models (such as GPT-4) to analyze exceptions and stack traces, offering actionable insights for developers.
+    </p>
+    <p>
+        <strong>The Problem:</strong><br>
+        Modern applications generate a large volume of logs and exception events, making it difficult for developers to quickly identify, analyze, and resolve faults. Traditional logging solutions often lack structure and actionable insights, especially when dealing with complex exceptions or distributed systems. AiEventing addresses this by capturing, structuring, and analyzing exception events in real time, leveraging AI to provide deeper understanding and recommendations for remediation.
+    </p>
+</div>
+
+<!-- Explanation -->
+<div class="mb-4">
+    <h3 class="fw-bold">How This Demo Works</h3>
+    <p class="text-muted mb-1">
+            This reference application demonstrates how the AiEventing library can be integrated into a .NET web application for advanced event logging and analysis. It uses the <strong>EventSourcePublisher</strong> (a Microsoft <a href="https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.tracing.eventsource" target="_blank">EventSource</a>) to log events, which are then captured in real time by the <strong>EventReader</strong> (a Microsoft <a href="https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.tracing.eventlistener" target="_blank">EventListener</a>) and stored in a queue.
+    </p>
+    <p class="text-muted mb-1">
+        The web interface displays logging events as they happen in real time. You can generate simulated exceptions and view the corresponding ChatGPT analysis in JSON format. This demonstrates how exceptions are captured, processed, and made available for monitoring or AI-driven analysis.
+    </p>
+    <p class="small text-secondary">
+        Click <strong>"Generate Random Exception"</strong> to create a simulated exception event. The <strong>"JSON Events"</strong> window below will automatically update every few seconds, showing the latest events as JSON. This allows you to observe how exceptions are captured and displayed for monitoring or debugging. Click <strong>"Clear"</strong> to reset the display at any time.
+    </p>
+</div>
+
+    <!-- Generate Exception Button -->
+    <div class="mb-3">
+        <button class="btn btn-danger" id="generateExceptionBtn">Generate Random Exception</button>
+        <button class="btn btn-secondary" id="clearDisplayBtn" type="button">Clear</button>
+    </div>
+
+    <!-- JSON Events Display -->
+    <div class="mb-3">
+        <label class="form-label">Intelligent Log Events</label>
+        <pre id="jsonEventsDisplay" style="height: 500px; background: #222; color: #0f0; overflow-y: scroll; padding: 1em; font-size: 0.9em;"></pre>
+    </div>
+</div>
+
+<script>
+    document.getElementById('generateExceptionBtn').addEventListener('click', function () {
+        fetch('/api/generate-exception', { method: 'POST' });
+    });
+
+    document.getElementById('clearDisplayBtn').addEventListener('click', function () {
+        document.getElementById('jsonEventsDisplay').textContent = '';
+    });
+
+    function decodeUnicode(str) {
+        return str.replace(/\\u[\dA-Fa-f]{4}/g, function(match) {
+            return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
+        });
+    }
+
+    function addJsonEvent(event) {
+        // Parse event if it's a JSON string
+        let obj = event;
+        if (typeof obj === "string") {
+            try {
+                obj = JSON.parse(obj);
+            } catch {
+                // Leave as string if not JSON
+            }
+        }
+
+        // If there's a body property, decode and parse as needed
+        if (obj && typeof obj === "object" && obj.body && typeof obj.body === "string") {
+            let decoded = decodeUnicode(obj.body).replace(/\\r\\n|\\n/g, '\n');
+            let parsed = decoded;
+            obj.body = parsed.replace(/\\"/g, '"');
+        }
+
+        // Pretty-print the object, including the cleaned-up body
+        const display = document.getElementById('jsonEventsDisplay');
+        if (typeof obj === "object") {
+            let pretty = JSON.stringify(obj, null, 2).replace(/\\r\\n|\\n/g, '\n');
+            display.textContent += pretty + "\n\n";
+        } else {
+            display.textContent += obj + "\n\n";
+        }
+        display.scrollTop = display.scrollHeight;
+    }
+
+    // Poll the backend for new events every 2 seconds
+    setInterval(() => {
+        fetch('/api/events')
+            .then(response => response.json())
+            .then(events => {
+                for (let i = 0; i < events.length; i++) {
+                    addJsonEvent(events[i]);
+                }
+            });
+    }, 2000);
+</script>
+}
