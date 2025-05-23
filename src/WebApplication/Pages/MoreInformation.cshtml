@@ -1,0 +1,98 @@
+﻿@page
+@using WebApp.Models;
+@using WebApp.Pages
+@model MoreInformationModel
+@{
+    ViewData["Title"] = "More Information";
+}
+
+<div class="container mt-4">
+    <!-- Introduction -->
+    <div class="mb-2">
+        <h2 class="fw-bold">Intelligent Logging & AI Fault Analysis</h2>
+        <p class="text-muted mb-1">
+            This page provides an overview of the <a href="https://github.com/DwaineDGIlmer/AiEventing" target="_blank">AiEventing</a> library and how it integrates with .NET applications for advanced event logging and AI-powered diagnostics.
+        </p>
+        <p>
+            <strong>About AiEventing:</strong><br>
+            AiEventing leverages Microsoft’s extensible logging infrastructure and advanced AI to deliver actionable insights and rapid diagnostics for your .NET solutions.
+        </p>
+        <p>
+            <strong>The Problem:</strong><br>
+            Modern applications generate a large volume of logs and exception events, making it difficult for developers to quickly identify, analyze, and resolve faults. AiEventing addresses this by capturing, structuring, and analyzing exception events in real time, leveraging AI to provide deeper understanding and recommendations for remediation.
+        </p>
+    </div>
+
+    <!-- Explanation -->
+    <div class="mb-4">
+        <h3 class="fw-bold">How AiEventing Works</h3>
+        <ol>
+            <li>
+                <strong>Seamless Microsoft Integration:</strong>
+                <ul>
+                    <li>
+                        Logging is initialized using <a href="https://learn.microsoft.com/en-us/dotnet/core/extensions/dependency-injection" target="_blank">Dependency Injection</a> and <a href="https://learn.microsoft.com/en-us/aspnet/core/fundamentals/logging/" target="_blank">ILogger</a> patterns.
+                    </li>
+                    <li>
+                        The <code>EventSourcePublisher</code> is registered as a singleton, ensuring efficient, thread-safe event publishing.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <strong>Structured, Contextual Logging:</strong>
+                <ul>
+                    <li>
+                        <code>ApplicationLogger</code> captures log level, category, scopes, correlation IDs, and exception details for every event.
+                    </li>
+                    <li>
+                        Scopes are managed using Microsoft’s <code>IExternalScopeProvider</code> for logical grouping and distributed tracing.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <strong>AI-Powered Fault Analysis with ChatGPT:</strong>
+                <ul>
+                    <li>
+                        When an exception is logged, the logger automatically invokes a ChatGPT-powered analysis service.
+                    </li>
+                    <li>
+                        The exception’s stack trace and context are securely sent to the AI, which analyzes the fault and suggests likely causes and fixes.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <strong>Smart Caching for Efficiency:</strong>
+                <ul>
+                    <li>
+                        Each unique exception is hashed and results are cached in a thread-safe dictionary.
+                    </li>
+                    <li>
+                        If the same exception occurs again, the cached analysis is instantly retrieved and published—no redundant AI calls.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <strong>Enterprise-Ready Event Publishing:</strong>
+                <ul>
+                    <li>
+                        All log events, including AI-generated analyses, are published via <code>EventSourcePublisher</code> for integration with Windows Event Tracing, Azure Monitor, and other Microsoft observability tools.
+                    </li>
+                </ul>
+            </li>
+        </ol>
+    </div>
+
+    <h3 class="fw-bold">Why use AiEventing?</h3>
+    <ul>
+        <li><strong>Microsoft-Grade Reliability:</strong> Built on proven .NET and Azure logging patterns.</li>
+        <li><strong>AI-Driven Insights:</strong> ChatGPT integration delivers actionable diagnostics, reducing mean time to resolution (MTTR).</li>
+        <li><strong>Smart Caching:</strong> Avoids redundant analysis, ensuring efficiency at scale.</li>
+        <li><strong>Future-Proof:</strong> Ready for integration with your existing Microsoft monitoring and analytics platforms.</li>
+    </ul>
+
+    <blockquote class="blockquote">
+        <p class="mb-0">
+            Empower your teams with intelligent, actionable logging—where every event is an opportunity for improvement.
+        </p>
+    </blockquote>
+</div>

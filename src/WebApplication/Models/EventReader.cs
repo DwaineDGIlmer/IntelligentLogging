@@ -1,6 +1,9 @@
-﻿using Loggers.Publishers;
+﻿using Core.Extensions;
+using Core.Models;
+using Loggers.Publishers;
 using System.Collections.Concurrent;
 using System.Diagnostics.Tracing;
+using System.Text.Json;
 
 namespace WebApp.Models
 {
@@ -20,6 +23,13 @@ namespace WebApp.Models
         /// messages.  It is suitable for scenarios where multiple threads need to produce or consume events
         /// concurrently.</remarks>
         public ConcurrentQueue<string> EventQueue { get; } = new ConcurrentQueue<string>();
+
+        /// <summary>
+        /// Gets the queue that holds responses from the ChatGPT API.
+        /// </summary>
+        /// <remarks>This property provides a thread-safe mechanism for accessing ChatGPT responses in
+        /// scenarios where multiple threads may be producing or consuming responses.</remarks>
+        public ConcurrentQueue<DemoMessage> ChatGptMessageQueue { get; set; } = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EventReader"/> class and enables event logging for the
@@ -44,19 +54,54 @@ namespace WebApp.Models
         /// <param name="eventData">The event data containing information about the event, including its ID and payload.</param>
         protected override void OnEventWritten(EventWrittenEventArgs eventData)
         {
-            // Check if the event is from the expected event source
+            // Only process relevant event IDs and non-empty payloads
             if ((eventData.EventId == 100 || eventData.EventId == 101) &&
-                eventData.Payload != null && eventData.Payload.Count > 0)
+                eventData.Payload is { Count: > 0 })
             {
-                // Only take the first payload item, which should be the JSON string
                 var json = eventData.Payload[0]?.ToString();
-                if (!string.IsNullOrEmpty(json))
+                if (string.IsNullOrWhiteSpace(json))
+                    return;
+
+                // Enqueue the original JSON for event display
+                EventQueue.Enqueue(json);
+
+                try
                 {
-                    EventQueue.Enqueue(json);
+                    // Deserialize the OtelLogEvents object
+                    var otelEvent = OtelLogEvents.FromOtelJson(json);
+                    if (otelEvent.IsNull())
+                        return;
+
+                    // Try to parse the ChatCompletionResponse from the body
+                    if (otelEvent.IsNull() ||
+                        string.IsNullOrWhiteSpace(otelEvent.Body) ||
+                        !OtelLogEvents.IsJson(otelEvent.Body))
+                        return;
+
+                    // Probe the body before deserializing as ChatCompletionResponse
+                    using JsonDocument doc = JsonDocument.Parse(otelEvent.Body);
+                    if (doc.RootElement.ValueKind == JsonValueKind.Array)
+                    {
+                        var choices = JsonSerializer.Deserialize<ChatCompletionChoice[]>(otelEvent.Body);
+                        if (choices != null)
+                        {
+                            foreach (var choice in choices)
+                            {
+                                if (choice.Message != null)
+                                    ChatGptMessageQueue.Enqueue(new DemoMessage(choice.Message));
+                            }
+                        }
+                    }
+                }
+                catch (JsonException ex)
+                {
+                    // Log deserialization errors here
+                    Console.WriteLine($"Failed to deserialize event: {ex}");
                 }
             }
         }
     }
+
 
     /// <summary>
     /// Provides a singleton instance of the <see cref="EventReader"/> class.

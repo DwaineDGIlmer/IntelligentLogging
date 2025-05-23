@@ -1,4 +1,5 @@
 ﻿@page
+@using WebApp.Models;
 @using WebApp.Pages
 @model WebApp.Pages.IndexModel
 @{
@@ -6,46 +7,71 @@
 }
 
 <div class="container mt-4">
-<!-- Introduction -->
-<div class="mb-2">
-    <h2 class="fw-bold">Intelligent Logging Demo</h2>
-    <p class="text-muted mb-1">
-        This web page is a reference application demonstrating the <a href="https://github.com/DwaineDGIlmer/AiEventing" target="_blank">AiEventing</a> library.
-    </p>
-    <p>
-        <strong>About AiEventing:</strong><br>
-        AiEventing is a .NET solution for advanced, AI-assisted event logging and fault analysis. It provides structured logging, resilient HTTP clients, and integration with AI models (such as GPT-4) to analyze exceptions and stack traces, offering actionable insights for developers.
-    </p>
-    <p>
-        <strong>The Problem:</strong><br>
-        Modern applications generate a large volume of logs and exception events, making it difficult for developers to quickly identify, analyze, and resolve faults. Traditional logging solutions often lack structure and actionable insights, especially when dealing with complex exceptions or distributed systems. AiEventing addresses this by capturing, structuring, and analyzing exception events in real time, leveraging AI to provide deeper understanding and recommendations for remediation.
-    </p>
-</div>
+    <!-- Introduction -->
+    <div class="mb-2">
+        <h2 class="fw-bold">Intelligent Logging Demo</h2>
+        <p class="text-muted mb-1">
+            This web page is a reference application demonstrating the <a href="https://github.com/DwaineDGIlmer/AiEventing" target="_blank">AiEventing</a> library.
+        </p>
+        <p>
+            <strong>About AiEventing:</strong><br>
+            AiEventing is a .NET solution for advanced, AI-assisted event logging and fault analysis. It provides structured logging, resilient HTTP clients, and integration with AI models (such as GPT-4) to analyze exceptions and stack traces, offering actionable insights for developers.
+        </p>
+        <p>
+            <strong>The Problem:</strong><br>
+            Modern applications generate a large volume of logs and exception events, making it difficult for developers to quickly identify, analyze, and resolve faults. Traditional logging solutions often lack structure and actionable insights, especially when dealing with complex exceptions or distributed systems. AiEventing addresses this by capturing, structuring, and analyzing exception events in real time, leveraging AI to provide deeper understanding and recommendations for remediation.
+        </p>
+    </div>
 
-<!-- Explanation -->
-<div class="mb-4">
-    <h3 class="fw-bold">How This Demo Works</h3>
-    <p class="text-muted mb-1">
-            This reference application demonstrates how the AiEventing library can be integrated into a .NET web application for advanced event logging and analysis. It uses the <strong>EventSourcePublisher</strong> (a Microsoft <a href="https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.tracing.eventsource" target="_blank">EventSource</a>) to log events, which are then captured in real time by the <strong>EventReader</strong> (a Microsoft <a href="https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.tracing.eventlistener" target="_blank">EventListener</a>) and stored in a queue.
-    </p>
-    <p class="text-muted mb-1">
-        The web interface displays logging events as they happen in real time. You can generate simulated exceptions and view the corresponding ChatGPT analysis in JSON format. This demonstrates how exceptions are captured, processed, and made available for monitoring or AI-driven analysis.
-    </p>
-    <p class="small text-secondary">
-        Click <strong>"Generate Random Exception"</strong> to create a simulated exception event. The <strong>"JSON Events"</strong> window below will automatically update every few seconds, showing the latest events as JSON. This allows you to observe how exceptions are captured and displayed for monitoring or debugging. Click <strong>"Clear"</strong> to reset the display at any time.
-    </p>
-</div>
+    <!-- Explanation -->
+    <div class="mb-4">
+        <h3 class="fw-bold">How This Demo Works</h3>
+        <p class="text-muted mb-1">
+                This reference application demonstrates how the AiEventing library can be integrated into a .NET web application for advanced event logging and analysis. It uses the <strong>EventSourcePublisher</strong> (a Microsoft <a href="https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.tracing.eventsource" target="_blank">EventSource</a>) to log events, which are then captured in real time by the <strong>EventReader</strong> (a Microsoft <a href="https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.tracing.eventlistener" target="_blank">EventListener</a>) and stored in a queue.
+        </p>
+        <p class="text-muted mb-1">
+                The web interface displays all logging events using the industry standard [OTEL](https://opentelemetry.io/docs/) format as they happen in real time. You can generate simulated exceptions and view the corresponding ChatGPT analysis in JSON format. This demonstrates how exceptions are captured, processed, and made available for monitoring or AI-driven analysis.
+        </p>
+        <p class="small text-secondary">
+            Click <strong>"Generate Random Exception"</strong> to create a simulated exception event. The <strong>"JSON Events"</strong> window below will automatically update every few seconds, showing the latest events as JSON. This allows you to observe how exceptions are captured and displayed for monitoring or debugging. Click <strong>"Clear"</strong> to reset the display at any time.
+        </p>
+    </div>
 
-    <!-- Generate Exception Button -->
-    <div class="mb-3">
-        <button class="btn btn-danger" id="generateExceptionBtn">Generate Random Exception</button>
+    <!-- JSON Events Clear Button -->
+   <div class="mb-3">
         <button class="btn btn-secondary" id="clearDisplayBtn" type="button">Clear</button>
     </div>
 
     <!-- JSON Events Display -->
     <div class="mb-3">
-        <label class="form-label">Intelligent Log Events</label>
+        <label class="form-label">Log Events</label>
         <pre id="jsonEventsDisplay" style="height: 500px; background: #222; color: #0f0; overflow-y: scroll; padding: 1em; font-size: 0.9em;"></pre>
+    </div>
+
+    <!-- Generate Exception Button -->
+   <div class="mb-3">
+        <button class="btn btn-danger" id="generateExceptionBtn">Generate Random Exception</button>
+    </div>
+
+    <!-- ChatGpt Events Table -->
+    <div class="mb-3">
+        <label class="form-label">Log Analysis Table</label>
+    <table class="table table-bordered table-striped w-100">
+        <thead>
+            <tr>
+                <th class="nowrap">Timestamp</th>
+                <th>Role</th>
+                <th>Message</th>
+            </tr>
+        </thead>
+        <tbody id="chatGptTableBody">
+            <tr class="placeholderRow"><td colspan="3" class="text-center text-muted">No analysis event messages yet.</td></tr>
+            <tr class="placeholderRow"><td colspan="3" class="text-center text-muted">&nbsp;</td></tr>
+            <tr class="placeholderRow"><td colspan="3" class="text-center text-muted">&nbsp;</td></tr>
+            <tr class="placeholderRow"><td colspan="3" class="text-center text-muted">&nbsp;</td></tr>
+            <tr class="placeholderRow"><td colspan="3" class="text-center text-muted">&nbsp;</td></tr>
+        </tbody>
+    </table>
     </div>
 </div>
 
@@ -103,5 +129,38 @@
                 }
             });
     }, 2000);
+
+    // Function to update ChatGpt Events Table
+    function updateChatGptTable() {
+        fetch('/api/ChatGptMessages')
+            .then(response => response.json())
+            .then(messages => {
+                const tbody = document.getElementById('chatGptTableBody');
+                tbody.innerHTML = '';
+                // Show up to 5 most recent messages, newest at the top
+                const displayMessages = messages.slice(-5).reverse();
+                for (let i = 0; i < 5; i++) {
+                    if (i < displayMessages.length) {
+                        const message = displayMessages[i];
+                        const row = `<tr>
+                            <td>${message.timestamp}</td>
+                            <td>${message.role}</td>
+                            <td>${message.content}</td>
+                        </tr>`;
+                        tbody.innerHTML += row;
+                    } else {
+                        tbody.innerHTML += `<tr class="placeholderRow">
+                            <td colspan="3" class="text-center text-muted">&nbsp;</td>
+                        </tr>`;
+                    }
+                }
+                // If there are no messages at all, show "No messages yet." in the first row
+                if (messages.length === 0) {
+                    tbody.querySelector('tr').innerHTML = `<td colspan="3" class="text-center text-muted">No messages yet.</td>`;
+                }
+            });
+    }
+    // Poll for new messages every 2 seconds
+    setInterval(updateChatGptTable, 2000);
+    updateChatGptTable(); // Initial load
 </script>
-}

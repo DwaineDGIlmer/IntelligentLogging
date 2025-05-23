@@ -25,6 +25,7 @@ namespace WebApp.Pages
         /// logs an informational message indicating that the page was accessed.</remarks>
         public void OnGet()
         {
+            // Log an informational message indicating that the Index page was accessed
             _logger.LogInformation("Index page accessed.");
         }
     }

@@ -4,6 +4,21 @@
 
 This solution provides advanced logging and fault analysis capabilities for .NET applications. It is organized for modularity and testability.
 
+The solution includes a web application that demonstrates how to implement intelligent logging, eventing, and fault analysis.
+
+The main features include:
+- **Intelligent Logging:**  
+  Capture and store logs with contextual information.
+- **Eventing:**  
+  Trigger events based on specific log entries or conditions.
+- **Fault Analysis:**  
+  Analyze logs to identify patterns and potential issues.
+- **Unit Testing:**  
+  Comprehensive unit tests to ensure the reliability of the logging and fault analysis features.
+
+## Deployed Application
+The application is deployed in Azure App Service, [IntelligentLogging](https://intelligentlogging-fcgtc5gfazcaaeej.centralus-01.azurewebsites.net/). The solution also includes a web interface for viewing logs and events.
+
 ## Solution Structure
 
 ```
