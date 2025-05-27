@@ -32,9 +32,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Core" Version="1.0.0" />
-    <PackageReference Include="Loggers" Version="1.0.0" />
-  </ItemGroup>
-
 </Project>
