@@ -109,7 +109,7 @@ IntelligentLogging/
 
 ---
 
-## Project Links
+## 🔗 Project Links
 
 - [Project Homepage](https://github.com/DwaineDGIlmer/IntelligentLogging)
 - [EzLeadGenerator Homepage](https://github.com/DwaineDGIlmer/EzLeadGenerator)
