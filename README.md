@@ -128,4 +128,4 @@ Please [open an issue](https://github.com/your-org/IntelligentLogging/issues) or
 
 ## 📄 License
 
-This project is licensed under the
+This project is licensed under the [MIT License](LICENSE).
