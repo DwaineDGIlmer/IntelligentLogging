@@ -24,11 +24,9 @@
 
 ## 🚀 Overview
 
-IntelligentLogging is a modular solution for capturing, analyzing, and visualizing logs and exceptions in .NET applications.  
-It features real-time eventing, OpenTelemetry (OTEL) support, and a web UI for monitoring and AI-driven analysis.
+IntelligentLogging is a modular solution for capturing, analyzing, and visualizing logs and exceptions in .NET applications. It features real-time eventing, OpenTelemetry (OTEL) support, and a web UI for monitoring and AI-driven analysis.
 
-Depends on AIEventing developed by [Dwain Gilmer](mailto:dwaine.gilmer@protonmail.com), which is a .NET solution for advanced, AI-assisted event logging and fault analysis. 
-It provides structured logging, resilient HTTP clients, and integration with AI models (such as GPT-4) to analyze exceptions and stack traces, offering actionable insights for developers.
+Depends on AIEventing developed by [Dwain Gilmer](mailto:dwaine.gilmer@protonmail.com), which is a .NET solution for advanced, AI-assisted event logging and fault analysis. It provides structured logging, resilient HTTP clients, and integration with AI models (such as GPT-4) to analyze exceptions and stack traces, offering actionable insights for developers.
 
 ---
 
