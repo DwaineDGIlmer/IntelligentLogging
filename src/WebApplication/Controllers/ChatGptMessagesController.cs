@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using WebApp.Models;
 
 namespace WebApp.Controllers
-{   
+{
     /// <summary>
     /// Provides endpoints for retrieving ChatGPT messages.
     /// </summary>
@@ -29,7 +29,7 @@ namespace WebApp.Controllers
         public IActionResult Get()
         {
             var messages = ChatGptMessageQueue
-                .Select(m => new { timestamp = m.Timestamp, role = m.Role, content = m.Content })
+                .Select(m => new { timestamp = m.Timestamp, message = m.Message })
                 .ToList();
             return Ok(messages);
         }

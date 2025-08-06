@@ -44,8 +44,8 @@ public class ChatGptMessagesControllerTest
         // Arrange
         var messages = new List<DemoMessage>
         {
-            new DemoMessage() { Role = "user", Content = "Hello" },
-            new DemoMessage() { Role = "assistant", Content = "Hi there!" }
+            new("Hello"),
+            new("Hi there!")
         };
 
         using (new MockEventReaderSingleton(messages))

@@ -19,6 +19,7 @@ builder.Services.AddSingleton<IPublisher>(EventSourcePublisher.Log);
 // Initialize the logging services
 builder.Services.InitializeServices(builder.Configuration);
 builder.Services.InitializeLogging(builder.Configuration);
+builder.Logging.AddConsole();
 
 var app = builder.Build();
 

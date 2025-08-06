@@ -1,47 +1,55 @@
-using Core.Models;
+using WebApp.Models;
 
-namespace WebApp.Models.Tests
+namespace UnitTests.Models
 {
     public class DemoMessageTest
     {
         [Fact]
-        public void Constructor_CopiesRoleAndContent_FromMessage()
+        public void DefaultConstructor_SetsMessageToEmptyString()
         {
-            // Arrange
-            var originalMessage = new Message
-            {
-                Role = "user",
-                Content = "Hello, world!"
-            };
-
-            // Act
-            var demoMessage = new DemoMessage(originalMessage);
-
-            // Assert
-            Assert.Equal(originalMessage.Role, demoMessage.Role);
-            Assert.Equal(originalMessage.Content, demoMessage.Content);
+            var demoMessage = new DemoMessage();
+            Assert.Equal(string.Empty, demoMessage.Message);
         }
 
         [Fact]
-        public void Timestamp_IsSetToCurrentUtcTime_InIso8601FormatWithNewLine()
+        public void DefaultConstructor_SetsTimestampToCurrentUtcTimeInIsoFormat()
         {
-            // Arrange
             var before = DateTime.UtcNow;
-            var message = new Message { Role = "system", Content = "Test" };
+            var demoMessage = new DemoMessage();
+            var after = DateTime.UtcNow;
 
-            // Act
-            var demoMessage = new DemoMessage(message);
+            // Timestamp should be in ISO 8601 format with 'T' replaced by newline
             var timestamp = demoMessage.Timestamp;
-
-            // Assert
-            // The timestamp should contain a newline (from Replace("T", Environment.NewLine))
             Assert.Contains(Environment.NewLine, timestamp);
 
-            // Parse the timestamp back to DateTime to check it's valid and recent
             var reconstructed = timestamp.Replace(Environment.NewLine, "T");
-            var parsed = DateTime.Parse(reconstructed, null, System.Globalization.DateTimeStyles.RoundtripKind);
+            DateTime parsed;
+            Assert.True(DateTime.TryParse(reconstructed, null, System.Globalization.DateTimeStyles.RoundtripKind, out parsed));
+            Assert.InRange(parsed, before.AddSeconds(-1), after.AddSeconds(1));
+        }
 
-            Assert.True(parsed >= before && parsed <= DateTime.UtcNow.AddSeconds(1));
+        [Fact]
+        public void Constructor_WithMessage_SetsMessageProperty()
+        {
+            var msg = "Hello, world!";
+            var demoMessage = new DemoMessage(msg);
+            Assert.Equal(msg, demoMessage.Message);
+        }
+
+        [Fact]
+        public void Constructor_WithMessage_SetsTimestampToCurrentUtcTimeInIsoFormat()
+        {
+            var before = DateTime.UtcNow;
+            var demoMessage = new DemoMessage("test");
+            var after = DateTime.UtcNow;
+
+            var timestamp = demoMessage.Timestamp;
+            Assert.Contains(Environment.NewLine, timestamp);
+
+            var reconstructed = timestamp.Replace(Environment.NewLine, "T");
+            DateTime parsed;
+            Assert.True(DateTime.TryParse(reconstructed, null, System.Globalization.DateTimeStyles.RoundtripKind, out parsed));
+            Assert.InRange(parsed, before.AddSeconds(-1), after.AddSeconds(1));
         }
     }
 }

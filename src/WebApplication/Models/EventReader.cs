@@ -1,9 +1,10 @@
 ﻿using Core.Extensions;
-using Core.Models;
+using Core.Helpers;
 using Loggers.Publishers;
 using System.Collections.Concurrent;
 using System.Diagnostics.Tracing;
 using System.Text.Json;
+using WebApp.Extensions;
 
 namespace WebApp.Models
 {
@@ -68,30 +69,20 @@ namespace WebApp.Models
                 try
                 {
                     // Deserialize the OtelLogEvents object
-                    var otelEvent = OtelLogEvents.FromOtelJson(json);
+                    var otelEvent = json.FromOtelJson();
                     if (otelEvent.IsNull())
                         return;
 
                     // Try to parse the ChatCompletionResponse from the body
                     if (otelEvent.IsNull() ||
                         string.IsNullOrWhiteSpace(otelEvent.Body) ||
-                        !OtelLogEvents.IsJson(otelEvent.Body))
+                        !otelEvent.Body.IsJson())
                         return;
 
                     // Probe the body before deserializing as ChatCompletionResponse
-                    using JsonDocument doc = JsonDocument.Parse(otelEvent.Body);
-                    if (doc.RootElement.ValueKind == JsonValueKind.Array)
-                    {
-                        var choices = JsonSerializer.Deserialize<ChatCompletionChoice[]>(otelEvent.Body);
-                        if (choices != null)
-                        {
-                            foreach (var choice in choices)
-                            {
-                                if (choice.Message != null)
-                                    ChatGptMessageQueue.Enqueue(new DemoMessage(choice.Message));
-                            }
-                        }
-                    }
+                    var sanitized = JsonHelpers.ExtractJson(otelEvent.Body).Replace("\r", string.Empty).Replace("\\r\\n", string.Empty);
+                    ChatGptMessageQueue.Enqueue(new DemoMessage(sanitized));
+
                 }
                 catch (JsonException ex)
                 {
