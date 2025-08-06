@@ -60,7 +60,6 @@
         <thead>
             <tr>
                 <th class="nowrap">Timestamp</th>
-                <th>Role</th>
                 <th>Message</th>
             </tr>
         </thead>
@@ -124,8 +123,12 @@
         fetch('/api/events')
             .then(response => response.json())
             .then(events => {
-                for (let i = 0; i < events.length; i++) {
-                    addJsonEvent(events[i]);
+                const display = document.getElementById('jsonEventsDisplay');
+                if (events.length > 0) {
+                    display.textContent = '';
+                    for (let i = 0; i < events.length; i++) {
+                        addJsonEvent(events[i]);
+                    }
                 }
             });
     }, 2000);
@@ -144,8 +147,7 @@
                         const message = displayMessages[i];
                         const row = `<tr>
                             <td>${message.timestamp}</td>
-                            <td>${message.role}</td>
-                            <td>${message.content}</td>
+                            <td>${message.message}</td>
                         </tr>`;
                         tbody.innerHTML += row;
                     } else {
