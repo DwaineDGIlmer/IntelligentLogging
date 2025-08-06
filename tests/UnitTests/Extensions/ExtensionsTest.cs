@@ -55,7 +55,7 @@ public class ExtensionsTest
         Assert.Equal("", result.TraceId);
         Assert.Equal("", result.SpanId);
         Assert.Equal((LogLevel)1, result.Level);
-        Assert.Null(result.Source);
+        Assert.Empty(result.Source);
         Assert.Null(result.CorrelationId);
     }
 
