@@ -10,15 +10,15 @@
 
 ## 📚 Table of Contents
 
-- [Overview](#-overview)
-- [Features](#-features)
-- [Live Demo](#-live-demo)
-- [Solution Structure](#-solution-structure)
-- [Getting Started](#-getting-started)
-- [Projects](#-projects)
+- [Overview](#overview)
+- [Features](#features)
+- [Live Demo](#live-demo)
+- [Solution Structure](#solution-structure)
+- [Getting Started](#getting-started)
+- [Projects](#projects)
 - [Links](#project-links)
-- [Contributing](#-contributing)
-- [License](#-license)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
