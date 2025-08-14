@@ -60,7 +60,9 @@ public class ExtensionsTest
     }
 
     [Theory]
+#pragma warning disable xUnit1012 // Null should only be used for nullable parameters
     [InlineData(null)]
+#pragma warning restore xUnit1012 // Null should only be used for nullable parameters
     [InlineData("")]
     [InlineData("   ")]
     public void IsJson_NullOrWhitespace_ReturnsFalse(string input)
