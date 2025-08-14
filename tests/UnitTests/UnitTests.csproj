@@ -19,6 +19,10 @@
     <ProjectReference Include="..\..\src\WebApplication\WebApp.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<PackageReference Include="Castle.Core" />
+	</ItemGroup>
+
   <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
