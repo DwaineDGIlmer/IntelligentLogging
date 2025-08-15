@@ -1,7 +1,7 @@
 ﻿namespace WebApp.Models;
 
 /// <summary>
-/// Represents a message with associated content and a timestamp indicating when the event occurred.
+/// Represents a message with associated content and a timestamp indicating when the message was created.
 /// </summary>
 /// <remarks>This class provides a way to encapsulate a message and its associated metadata, such as the time of
 /// creation. Instances of this class are immutable once created.</remarks>
