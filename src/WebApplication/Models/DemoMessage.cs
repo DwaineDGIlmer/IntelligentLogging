@@ -1,11 +1,10 @@
 ﻿namespace WebApp.Models;
 
 /// <summary>
-/// Represents a message with an associated timestamp.
+/// Represents a message with associated content and a timestamp indicating when the message was created.
 /// </summary>
-/// <remarks>The <see cref="DemoMessage"/> class extends the base <see cref="OpenAiMessage"/> class to include a
-/// timestamp indicating when the message was created or processed. This can be useful for tracking or logging
-/// purposes.</remarks>
+/// <remarks>This class provides a way to encapsulate a message and its associated metadata, such as the time of
+/// creation. Instances of this class are immutable once created.</remarks>
 public class DemoMessage
 {
     /// <summary>

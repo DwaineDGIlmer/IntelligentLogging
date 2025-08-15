@@ -6,7 +6,6 @@
 
   <!-- PackageReference items without versions - versions are managed centrally in Directory.Packages.props -->
   <ItemGroup>
-	  <PackageReference Include="ModelContextProtocol" />
 	  <PackageReference Include="Microsoft.Playwright" />
 	  <PackageReference Include="Swashbuckle.AspNetCore" />
 	  <PackageReference Include="OpenAI" />
