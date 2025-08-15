@@ -60,12 +60,20 @@ public class ExtensionsTest
     }
 
     [Theory]
-    [InlineData(null)]
+    [InlineData("null")]
     [InlineData("")]
     [InlineData("   ")]
     public void IsJson_NullOrWhitespace_ReturnsFalse(string input)
     {
-        Assert.False(input.IsJson());
+        if (input == null)
+        {
+            string? nullValue = null;
+            Assert.False(nullValue!.IsJson());
+        }
+        else
+        {
+            Assert.False(input.IsJson());
+        }
     }
 
     [Theory]

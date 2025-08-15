@@ -15,7 +15,18 @@
   </ItemGroup>
 
   <ItemGroup>
+   <PackageReference Include="Core" />
+   <PackageReference Include="Loggers" />
+   <PackageReference Include="Moq" />
+   <PackageReference Include="coverlet.collector" />
+   <PackageReference Include="Microsoft.NET.Test.Sdk" />
+   <PackageReference Include="xunit" />
+   <PackageReference Include="xunit.runner.visualstudio"/>
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="Xunit" />
+	<Using Include="Moq" />
   </ItemGroup>
 
 </Project>

@@ -23,8 +23,7 @@ namespace UnitTests.Models
             Assert.Contains(Environment.NewLine, timestamp);
 
             var reconstructed = timestamp.Replace(Environment.NewLine, "T");
-            DateTime parsed;
-            Assert.True(DateTime.TryParse(reconstructed, null, System.Globalization.DateTimeStyles.RoundtripKind, out parsed));
+            Assert.True(DateTime.TryParse(reconstructed, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime parsed));
             Assert.InRange(parsed, before.AddSeconds(-1), after.AddSeconds(1));
         }
 
