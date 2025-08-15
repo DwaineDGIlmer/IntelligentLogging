@@ -4,7 +4,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Central package version management -->
-    <PackageVersion Include="ModelContextProtocol" Version="0.3.0-preview.3" />
     <PackageVersion Include="Microsoft.Playwright" Version="1.54.0" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="9.0.3" />
     <PackageVersion Include="OpenAI" Version="2.3.0" />
