@@ -1088,7 +1088,12 @@ $.extend( $.validator, {
 			}
 
 			// Always apply ignore filter
-			return $( element ).not( this.settings.ignore )[ 0 ];
+			// Ensure element is a DOM element before passing to jQuery to prevent XSS
+			if (element && element.nodeType === 1) {
+				return $( element ).not( this.settings.ignore )[ 0 ];
+			} else {
+				return undefined;
+			}
 		},
 
 		checkable: function( element ) {
