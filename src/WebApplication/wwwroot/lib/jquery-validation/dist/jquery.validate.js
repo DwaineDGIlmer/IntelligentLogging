@@ -683,8 +683,30 @@ $.extend( $.validator, {
 			} );
 		},
 
-		clean: function( selector ) {
-			return $( selector )[ 0 ];
+		clean: function (selector) {
+			// Prevent XSS: only allow DOM elements, jQuery objects, or safe selectors (not HTML)
+			if (selector && (selector.nodeType === 1 || selector.nodeType === 9)) {
+				// DOM element
+				return selector;
+			}
+			if (selector && selector.jquery) {
+				// jQuery object
+				return selector[0];
+			}
+			if (typeof selector === "string") {
+				// Disallow HTML input (string starting with "<")
+				if (/^\s*</.test(selector)) {
+					throw new Error("Unsafe selector passed to clean(): HTML input is not allowed.");
+				}
+				// Use find on the current form context if available
+				if (this.currentForm) {
+					return $(this.currentForm).find(selector)[0];
+				}
+				// Fallback: use as selector in document context
+				return $(selector)[0];
+			}
+			// Otherwise, return null
+			return null;
 		},
 
 		errors: function() {
