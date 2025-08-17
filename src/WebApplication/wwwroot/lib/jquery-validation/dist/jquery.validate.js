@@ -19,6 +19,7 @@
 $.extend( $.fn, {
 
 	// https://jqueryvalidation.org/validate/
+	// NOTE: For all options that accept selectors, only CSS selectors are allowed. HTML strings are rejected for safety.
 	validate: function( options ) {
 
 		// If nothing is selected, return nothing; can't chain anyway
@@ -683,8 +684,18 @@ $.extend( $.validator, {
 			} );
 		},
 
+		// Accepts a DOM element or a selector string. If a string, only treat as a CSS selector, never as HTML.
 		clean: function( selector ) {
-			return $( selector )[ 0 ];
+			if (typeof selector === "string") {
+				// Prevent HTML interpretation by rejecting strings starting with "<"
+				if (selector.trim().charAt(0) === "<") {
+					throw new Error("Unsafe selector passed to clean: HTML is not allowed.");
+				}
+				// Use .find() on the current form to ensure only CSS selectors are used
+				return $(this.currentForm).find(selector)[0];
+			}
+			// If it's a DOM element or jQuery object, return the first element
+			return $(selector)[0];
 		},
 
 		errors: function() {
@@ -1069,7 +1080,15 @@ $.extend( $.validator, {
 			}
 
 			// Always apply ignore filter
-			return $( element ).not( this.settings.ignore )[ 0 ];
+			if (typeof element === "string") {
+				// Prevent HTML interpretation by rejecting strings starting with "<"
+				if (element.trim().charAt(0) === "<") {
+					throw new Error("Unsafe selector passed to validationTargetFor: HTML is not allowed.");
+				}
+				// Use .find() on the current form to ensure only CSS selectors are used
+				return $(this.currentForm).find(element).not(this.settings.ignore)[0];
+			}
+			return $(element).not(this.settings.ignore)[0];
 		},
 
 		checkable: function( element ) {
