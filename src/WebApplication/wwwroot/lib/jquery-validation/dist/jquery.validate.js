@@ -705,7 +705,7 @@ $.extend( $.validator, {
 				// Fallback: use as selector in document context
 				return $(selector)[0];
 			}
-			// Otherwise, return null
+			// Otherwise, return null 
 			return null;
 		},
 
