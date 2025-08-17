@@ -698,12 +698,9 @@ $.extend( $.validator, {
 				if (/^\s*</.test(selector)) {
 					throw new Error("Unsafe selector passed to clean(): HTML input is not allowed.");
 				}
-				// Use find on the current form context if available
-				if (this.currentForm) {
-					return $(this.currentForm).find(selector)[0];
-				}
-				// Fallback: use as selector in document context
-				return $(selector)[0];
+				// Always use .find() on a context to avoid XSS
+				var context = this.currentForm || document;
+				return $(context).find(selector)[0];
 			}
 			// Otherwise, return null 
 			return null;
