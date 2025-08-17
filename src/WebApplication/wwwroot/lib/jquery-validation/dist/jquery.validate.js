@@ -19,7 +19,6 @@
 $.extend( $.fn, {
 
 	// https://jqueryvalidation.org/validate/
-	// NOTE: For all options that accept selectors, only CSS selectors are allowed. HTML strings are rejected for safety.
 	validate: function( options ) {
 
 		// If nothing is selected, return nothing; can't chain anyway
@@ -684,18 +683,27 @@ $.extend( $.validator, {
 			} );
 		},
 
-		// Accepts a DOM element or a selector string. If a string, only treat as a CSS selector, never as HTML.
-		clean: function( selector ) {
-			if (typeof selector === "string") {
-				// Prevent HTML interpretation by rejecting strings starting with "<"
-				if (selector.trim().charAt(0) === "<") {
-					throw new Error("Unsafe selector passed to clean: HTML is not allowed.");
-				}
-				// Use .find() on the current form to ensure only CSS selectors are used
-				return $(this.currentForm).find(selector)[0];
+		clean: function (selector) {
+			// Prevent XSS: only allow DOM elements, jQuery objects, or safe selectors (not HTML)
+			if (selector && (selector.nodeType === 1 || selector.nodeType === 9)) {
+				// DOM element
+				return selector;
 			}
-			// If it's a DOM element or jQuery object, return the first element
-			return $(selector)[0];
+			if (selector && selector.jquery) {
+				// jQuery object
+				return selector[0];
+			}
+			if (typeof selector === "string") {
+				// Disallow HTML input (string starting with "<")
+				if (/^\s*</.test(selector)) {
+					throw new Error("Unsafe selector passed to clean(): HTML input is not allowed.");
+				}
+				// Always use .find() on a context to avoid XSS
+				var context = this.currentForm || document;
+				return $(context).find(selector)[0];
+			}
+			// Otherwise, return null 
+			return null;
 		},
 
 		errors: function() {
@@ -1080,15 +1088,7 @@ $.extend( $.validator, {
 			}
 
 			// Always apply ignore filter
-			if (typeof element === "string") {
-				// Prevent HTML interpretation by rejecting strings starting with "<"
-				if (element.trim().charAt(0) === "<") {
-					throw new Error("Unsafe selector passed to validationTargetFor: HTML is not allowed.");
-				}
-				// Use .find() on the current form to ensure only CSS selectors are used
-				return $(this.currentForm).find(element).not(this.settings.ignore)[0];
-			}
-			return $(element).not(this.settings.ignore)[0];
+			return $( element ).not( this.settings.ignore )[ 0 ];
 		},
 
 		checkable: function( element ) {
