@@ -1088,7 +1088,19 @@ $.extend( $.validator, {
 			}
 
 			// Always apply ignore filter
-			return $( element ).not( this.settings.ignore )[ 0 ];
+			// Ensure element is a DOM element before passing to jQuery to prevent XSS
+			// Harden: If element is a jQuery object or array, extract the DOM element
+			var domElement = element;
+			if (element && element.jquery) {
+				domElement = element[0];
+			} else if (Array.isArray(element)) {
+				domElement = element[0];
+			}
+			if (domElement && domElement.nodeType === 1) {
+				return $( domElement ).not( this.settings.ignore )[ 0 ];
+			} else {
+				return undefined;
+			}
 		},
 
 		checkable: function( element ) {
