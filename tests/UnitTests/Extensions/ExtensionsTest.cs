@@ -3,7 +3,7 @@ using WebApp.Extensions;
 
 namespace UnitTests.Extensions;
 
-public class ExtensionsTest
+sealed public class ExtensionsTest
 {
     [Fact]
     public void FromOtelJson_ParsesValidJson_ReturnsOtelLogEvents()

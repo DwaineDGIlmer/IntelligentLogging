@@ -2,7 +2,7 @@ using WebApp.Models;
 
 namespace UnitTests.Models
 {
-    public class DemoMessageTest
+    sealed public class DemoMessageTest
     {
         [Fact]
         public void DefaultConstructor_SetsMessageToEmptyString()

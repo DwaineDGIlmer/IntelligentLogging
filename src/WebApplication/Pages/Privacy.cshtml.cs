@@ -11,7 +11,7 @@ namespace WebApp.Pages
     /// Initializes a new instance of the <see cref="PrivacyModel"/> class.
     /// </remarks>
     /// <param name="logger">The logger instance used to log messages related to the <see cref="PrivacyModel"/>.</param>
-    public class PrivacyModel(ILogger<PrivacyModel> logger) : PageModel
+    sealed public class PrivacyModel(ILogger<PrivacyModel> logger) : PageModel
     {
         /// <summary>
         /// The logger instance used for logging information and errors.

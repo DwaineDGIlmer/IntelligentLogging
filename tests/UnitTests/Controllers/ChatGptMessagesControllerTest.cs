@@ -4,7 +4,7 @@ using WebApp.Models;
 
 namespace WebApp.Controllers.Tests;
 
-public class ChatGptMessagesControllerTest
+sealed public class ChatGptMessagesControllerTest
 {
     // Helper class to mock EventReaderSingleton and its queue
     private class MockEventReaderSingleton : IDisposable

@@ -2,7 +2,7 @@ using WebApp.Models;
 
 namespace UnitTests.Models
 {
-    public class ExceptionGeneratorTest
+    sealed public class ExceptionGeneratorTest
     {
         [Fact]
         public void GenerateRandomException_ReturnsExceptionWithStackTrace()

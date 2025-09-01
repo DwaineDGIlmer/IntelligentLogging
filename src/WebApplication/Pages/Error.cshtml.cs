@@ -16,7 +16,7 @@ namespace WebApp.Pages
     /// <param name="logger">The logger instance used to log error-related information.  This parameter cannot be <see langword="null"/>.</param>
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     [IgnoreAntiforgeryToken]
-    public class ErrorModel(ILogger<ErrorModel> logger) : PageModel
+    sealed public class ErrorModel(ILogger<ErrorModel> logger) : PageModel
     {
         /// <summary>       
         /// The request ID associated with the error.
