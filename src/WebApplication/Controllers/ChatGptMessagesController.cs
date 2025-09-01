@@ -11,7 +11,7 @@ namespace WebApp.Controllers
     /// The messages are returned as a list of objects containing the role and content of each message.</remarks>
     [ApiController]
     [Route("api/[controller]")]
-    sealed public class ChatGptMessagesController : ControllerBase
+    public sealed class ChatGptMessagesController : ControllerBase
     {
         /// <summary>
         /// Gets the queue that holds responses from the ChatGPT API.

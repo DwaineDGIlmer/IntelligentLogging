@@ -3,7 +3,7 @@
     /// <summary>
     /// Provides functionality to generate and log random exceptions for testing purposes.
     /// </summary>
-    sealed public class ExceptionGenerator
+    public sealed class ExceptionGenerator
     {
         /// <summary>
         /// A list of factory methods for creating different types of exceptions.

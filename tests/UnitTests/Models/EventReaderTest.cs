@@ -3,7 +3,7 @@ using WebApp.Models;
 
 namespace UnitTests.Models
 {
-    sealed public class EventReaderTest
+    public sealed class EventReaderTest
     {
         private class TestEventSource : EventSource
         {

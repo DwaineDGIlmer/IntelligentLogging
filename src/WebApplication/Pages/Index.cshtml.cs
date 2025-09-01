@@ -11,7 +11,7 @@ namespace WebApp.Pages
     /// Initializes a new instance of the <see cref="IndexModel"/> class.
     /// </remarks>
     /// <param name="logger">The logger instance used to log diagnostic and operational messages.</param>
-    sealed public class IndexModel(ILogger<IndexModel> logger) : PageModel
+    public sealed class IndexModel(ILogger<IndexModel> logger) : PageModel
     {
         /// <summary>
         /// The logger instance used for logging information, warnings, and errors.

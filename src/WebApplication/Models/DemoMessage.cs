@@ -5,7 +5,7 @@
 /// </summary>
 /// <remarks>This class provides a way to encapsulate a message and its associated metadata, such as the time of
 /// creation. Instances of this class are immutable once created.</remarks>
-sealed public class DemoMessage
+public sealed class DemoMessage
 {
     /// <summary>
     /// The content of the message.
