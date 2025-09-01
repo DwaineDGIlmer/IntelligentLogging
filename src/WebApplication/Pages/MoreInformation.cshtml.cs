@@ -7,7 +7,7 @@ namespace WebApp.Pages
     /// </summary>
     /// <remarks>This class is used to handle the data and logic for the "More Information" page.  It inherits
     /// from <see cref="PageModel"/>, which provides the base functionality for Razor Pages models.</remarks>
-    public class MoreInformationModel : PageModel
+    sealed public class MoreInformationModel : PageModel
     {
         /// <summary>
         /// Handles GET requests for the page.

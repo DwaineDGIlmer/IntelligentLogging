@@ -15,7 +15,7 @@ namespace WebApp.Models
     /// cref="EventSource"/>  and enqueue the event payloads as JSON strings into a thread-safe <see
     /// cref="ConcurrentQueue{T}"/>. Only events with IDs 100 or 101 and non-empty payloads are processed. The first
     /// payload item is  expected to be a JSON string.</remarks>
-    public class EventReader : EventListener
+    sealed public class EventReader : EventListener
     {
         /// <summary>
         /// Gets the thread-safe queue used to store event messages.

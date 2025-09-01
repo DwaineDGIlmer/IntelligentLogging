@@ -6,7 +6,7 @@ using WebApp.Controllers;
 namespace UnitTests.Controllers;
 
 // Minimal stub for EventReaderSingleton for test context
-public class EventReaderSingleton
+sealed public class EventReaderSingleton
 {
     private static readonly EventReaderSingleton _instance = new();
     public static EventReaderSingleton Instance => _instance;
@@ -14,7 +14,7 @@ public class EventReaderSingleton
     private EventReaderSingleton() { }
 }
 
-public class EventsControllerTest
+sealed public class EventsControllerTest
 {
     // Helper to reset the singleton's queue for isolation
     private static void ClearEventQueue()

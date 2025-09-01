@@ -11,7 +11,7 @@ namespace WebApp.Controllers
     /// and follows RESTful conventions.</remarks>
     [ApiController]
     [Route("api/[controller]")]
-    public class EventsController : ControllerBase
+    sealed public class EventsController : ControllerBase
     {
         private readonly ILogger<EventsController> _logger;
 
