@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Logging;
-using Moq;
 using System.Collections.Concurrent;
 using WebApp.Controllers;
 
